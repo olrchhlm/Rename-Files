@@ -4,19 +4,27 @@ import shutil
 
 def renameFilesOnUpperLevel(path, newName):
     files = os.listdir(path)
-    for file in enumerate(files):
+    for index, file in enumerate(files):
         os.rename(os.path.join(path, file), os.path.join(path, newName+'-'+file))
     return
 
 def renameFilesSubfolders(path):
+    renameFilesOnUpperLevel(path, "foo")
+
+    print("hier gehts noch")
+
     subdirectories = [x[0] for x in os.walk(path)]
     subdirectories.pop(0)     
+
+    destinationPath = path + "/" + "+Export"
+    os.mkdir(destinationPath)
 
     for subdirectory in subdirectories: 
         timestamp = time.time()
         print(timestamp)
         print(subdirectory)
         renameFilesOnUpperLevel(subdirectory, str(timestamp))
+        move(subdirectory, destinationPath)
 
 def move(sourcePath, destinationPath): 
     sourceFiles = os.listdir(sourcePath)
@@ -40,7 +48,6 @@ def functionSelector():
         renameFilesSubfolders(path)
     elif (input == "c"):
         path = raw_input("Bitte gib den Pfad an, in dem die Dateien liegen.")
-        move()
     else:
         print("Bitte eine Funktion auswaehlen")
     return
